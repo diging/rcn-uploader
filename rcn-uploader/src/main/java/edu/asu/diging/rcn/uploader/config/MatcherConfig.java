@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 @EnableWebMvc
 @EnableAspectJAutoProxy
-@ComponentScan({"edu.asu.diging.rcn.uploader"})
+@ComponentScan({"edu.asu.diging.rcn.uploader", "edu.asu.diging.simpleusers.core"})
 public class MatcherConfig {
 
     @Bean
