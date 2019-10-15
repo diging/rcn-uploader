@@ -16,6 +16,8 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 
+import edu.asu.diging.rcn.uploader.core.kafka.impl.UploadDatasetListener;
+
 @Configuration
 @EnableKafka
 @PropertySource("classpath:/config.properties")
@@ -72,6 +74,11 @@ public class KafkaConfig {
         factory.setConsumerFactory(consumerFactory());
         
         return factory;
+    }
+    
+    @Bean
+    public UploadDatasetListener referenceImportListener() {
+        return new UploadDatasetListener();
     }
 
 }
