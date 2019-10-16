@@ -11,10 +11,8 @@ import org.springframework.stereotype.Service;
 import org.w3c.dom.Node;
 
 import edu.asu.diging.eaccpf.model.ConventionDeclaration;
-import edu.asu.diging.eaccpf.model.Record;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.ConventionDeclarationTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.IConvDeclTagParserRegistry;
-import edu.asu.diging.rcn.uploader.core.service.parse.eac.ITagParserRegistry;
 
 @Service
 public class ConventionDeclarationParserRegistry implements IConvDeclTagParserRegistry {

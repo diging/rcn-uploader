@@ -1,4 +1,4 @@
-package edu.asu.diging.rcn.uploader.core.service.parse.eac.condec;
+package edu.asu.diging.rcn.uploader.core.service.parse.eac.general;
 
 import java.io.StringWriter;
 
@@ -7,6 +7,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
@@ -17,10 +18,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.asu.diging.eaccpf.model.ConventionDeclaration;
+import edu.asu.diging.eaccpf.model.LocalTypeDeclaration;
+import edu.asu.diging.eaccpf.model.RightsDeclaration;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.ConventionDeclarationTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.LocalTypeDeclarationTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.RightsDeclarationTagParser;
 
 @Component
-public class CitationParser implements ConventionDeclarationTagParser {
+public class CitationParser implements ConventionDeclarationTagParser, LocalTypeDeclarationTagParser, RightsDeclarationTagParser {
     
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -31,13 +36,27 @@ public class CitationParser implements ConventionDeclarationTagParser {
 
     @Override
     public void parse(Node node, ConventionDeclaration declaration) {
+        declaration.setCitation(getCitationText(node));
+    }
+    
+    @Override
+    public void parse(Node node, LocalTypeDeclaration declaration) {
+        declaration.setCitation(getCitationText(node));
+    }
+    
+    @Override
+    public void parse(Node node, RightsDeclaration rights) {
+        rights.setCitation(getCitationText(node));
+    }
+
+    private String getCitationText(Node node) throws TransformerFactoryConfigurationError {
         TransformerFactory transFactory = TransformerFactory.newInstance();
         Transformer transformer;
         try {
             transformer = transFactory.newTransformer();
         } catch (TransformerConfigurationException e) {
             logger.error("Could not create transformer to read abstract.", e);
-            return;
+            return "";
         }
         StringWriter buffer = new StringWriter();
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
@@ -57,7 +76,7 @@ public class CitationParser implements ConventionDeclarationTagParser {
         }
         
         String citationText = buffer.toString();
-        declaration.setCitation(citationText);
+        return citationText;
     }
 
 }
