@@ -1,4 +1,4 @@
-package edu.asu.diging.rcn.uploader.core.service.parse.eac.control;
+package edu.asu.diging.rcn.uploader.core.service.parse.eac.general;
 
 import java.util.ArrayList;
 
@@ -8,12 +8,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.asu.diging.eaccpf.model.DateRange;
+import edu.asu.diging.eaccpf.model.DateSet;
 import edu.asu.diging.eaccpf.model.LocalControl;
+import edu.asu.diging.eaccpf.model.UseDates;
 import edu.asu.diging.eaccpf.model.impl.DateRangeImpl;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.DateSetTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.LocalControlTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.UseDatesTagParser;
 
 @Component
-public class DateRangeParser implements LocalControlTagParser {
+public class DateRangeParser implements LocalControlTagParser, UseDatesTagParser, DateSetTagParser {
 
     @Override
     public String handlesTag() {
@@ -26,8 +30,21 @@ public class DateRangeParser implements LocalControlTagParser {
             control.setDateRanges(new ArrayList<DateRange>());
         }
         
+        control.getDateRanges().add(parseRange(node));
+    }
+
+    @Override
+    public void parse(Node node, UseDates useDates) {
+        useDates.getDateRanges().add(parseRange(node));
+    }
+    
+    @Override
+    public void parse(Node node, DateSet dateSet) {
+        dateSet.getDateRanges().add(parseRange(node));        
+    }
+
+    protected DateRange parseRange(Node node) {
         DateRange dateRange = new DateRangeImpl();
-        control.getDateRanges().add(dateRange);
         dateRange.setLocalType(((Element)node).getAttribute("localType"));
         
         NodeList fromDates = ((Element)node).getElementsByTagName("fromDate");
@@ -43,7 +60,7 @@ public class DateRangeParser implements LocalControlTagParser {
             Node to = toDates.item(0);
             dateRange.setToDate(to.getTextContent());
         }
+        
+        return dateRange;
     }
-
-
 }

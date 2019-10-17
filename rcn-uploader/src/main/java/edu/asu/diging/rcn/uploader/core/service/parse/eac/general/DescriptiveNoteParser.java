@@ -8,11 +8,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.asu.diging.eaccpf.model.ConventionDeclaration;
+import edu.asu.diging.eaccpf.model.Identity;
 import edu.asu.diging.eaccpf.model.LocalTypeDeclaration;
 import edu.asu.diging.eaccpf.model.MaintenanceAgency;
 import edu.asu.diging.eaccpf.model.RightsDeclaration;
 import edu.asu.diging.eaccpf.model.Source;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.ConventionDeclarationTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.IdentityTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.LocalTypeDeclarationTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.MaintAgencyTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.RightsDeclarationTagParser;
@@ -20,7 +22,7 @@ import edu.asu.diging.rcn.uploader.core.service.parse.eac.SourceTagParser;
 
 @Component
 public class DescriptiveNoteParser implements ConventionDeclarationTagParser, LocalTypeDeclarationTagParser,
-        MaintAgencyTagParser, RightsDeclarationTagParser, SourceTagParser {
+        MaintAgencyTagParser, RightsDeclarationTagParser, SourceTagParser, IdentityTagParser {
 
     @Override
     public String handlesTag() {
@@ -56,6 +58,12 @@ public class DescriptiveNoteParser implements ConventionDeclarationTagParser, Lo
         source.setDescriptiveNote(new ArrayList<String>());
         addDescriptiveNotes(node, source.getDescriptiveNote());
     }
+    
+    @Override
+    public void parse(Node node, Identity identity) {
+        identity.setDescriptiveNote(new ArrayList<String>());
+        addDescriptiveNotes(node, identity.getDescriptiveNote());
+    }
 
     private void addDescriptiveNotes(Node node, List<String> notes) {
         NodeList nodeList = node.getChildNodes();
@@ -64,4 +72,5 @@ public class DescriptiveNoteParser implements ConventionDeclarationTagParser, Lo
             notes.add(child.getTextContent());
         }
     }
+
 }
