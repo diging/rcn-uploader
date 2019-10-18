@@ -1,4 +1,4 @@
-package edu.asu.diging.rcn.uploader.core.service.parse.eac.general;
+package edu.asu.diging.rcn.uploader.core.service.parse.eac.desc.bioghist;
 
 import java.io.StringWriter;
 
@@ -18,46 +18,27 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.asu.diging.eaccpf.model.BiogHist;
-import edu.asu.diging.eaccpf.model.ConventionDeclaration;
-import edu.asu.diging.eaccpf.model.LocalTypeDeclaration;
-import edu.asu.diging.eaccpf.model.RightsDeclaration;
+import edu.asu.diging.eaccpf.model.impl.AbstractImpl;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.BiogHistTagParser;
-import edu.asu.diging.rcn.uploader.core.service.parse.eac.ConventionDeclarationTagParser;
-import edu.asu.diging.rcn.uploader.core.service.parse.eac.LocalTypeDeclarationTagParser;
-import edu.asu.diging.rcn.uploader.core.service.parse.eac.RightsDeclarationTagParser;
 
 @Component
-public class CitationParser
-        implements ConventionDeclarationTagParser, LocalTypeDeclarationTagParser, RightsDeclarationTagParser, BiogHistTagParser {
-
+public class AbstractParser implements BiogHistTagParser {
+    
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public String handlesTag() {
-        return "citation";
+        return "abstract";
     }
 
-    @Override
-    public void parse(Node node, ConventionDeclaration declaration) {
-        declaration.setCitation(getCitationText(node));
-    }
-
-    @Override
-    public void parse(Node node, LocalTypeDeclaration declaration) {
-        declaration.setCitation(getCitationText(node));
-    }
-
-    @Override
-    public void parse(Node node, RightsDeclaration rights) {
-        rights.setCitation(getCitationText(node));
-    }
-    
+   
     @Override
     public void parse(Node node, BiogHist bio) {
-        bio.getCitations().add(getCitationText(node));
+        bio.setAbstractText(new AbstractImpl());
+        bio.getAbstractText().setText(getText(node));
     }
 
-    private String getCitationText(Node node) throws TransformerFactoryConfigurationError {
+    private String getText(Node node) throws TransformerFactoryConfigurationError {
         TransformerFactory transFactory = TransformerFactory.newInstance();
         Transformer transformer;
         try {
@@ -68,22 +49,22 @@ public class CitationParser
         }
         StringWriter buffer = new StringWriter();
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-
+        
         NodeList children = node.getChildNodes();
         if (children.getLength() > 0) {
-            for (int i = 0; i < children.getLength(); i++) {
+            for (int i = 0; i<children.getLength(); i++) {
                 Node child = children.item(i);
                 try {
-                    transformer.transform(new DOMSource(child), new StreamResult(buffer));
+                    transformer.transform(new DOMSource(child),
+                          new StreamResult(buffer));
                 } catch (TransformerException e) {
                     logger.error("Could not extract abstract tag content.", e);
                     continue;
                 }
             }
         }
-
-        String citationText = buffer.toString();
-        return citationText;
+        
+        return buffer.toString();
     }
 
 }

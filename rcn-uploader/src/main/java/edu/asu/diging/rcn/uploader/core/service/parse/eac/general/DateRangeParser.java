@@ -7,6 +7,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import edu.asu.diging.eaccpf.model.ChronItem;
 import edu.asu.diging.eaccpf.model.DateRange;
 import edu.asu.diging.eaccpf.model.DateSet;
 import edu.asu.diging.eaccpf.model.LocalControl;
@@ -15,9 +16,10 @@ import edu.asu.diging.eaccpf.model.impl.DateRangeImpl;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.DateSetTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.LocalControlTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.UseDatesTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.desc.bioghist.ChronItemTagParser;
 
 @Component
-public class DateRangeParser implements LocalControlTagParser, UseDatesTagParser, DateSetTagParser {
+public class DateRangeParser implements LocalControlTagParser, UseDatesTagParser, DateSetTagParser, ChronItemTagParser {
 
     @Override
     public String handlesTag() {
@@ -42,6 +44,11 @@ public class DateRangeParser implements LocalControlTagParser, UseDatesTagParser
     public void parse(Node node, DateSet dateSet) {
         dateSet.getDateRanges().add(parseRange(node));        
     }
+    
+    @Override
+    public void parse(Node node, ChronItem item) {
+        item.getDateRanges().add(parseRange(node));
+    }
 
     protected DateRange parseRange(Node node) {
         DateRange dateRange = new DateRangeImpl();
@@ -63,4 +70,6 @@ public class DateRangeParser implements LocalControlTagParser, UseDatesTagParser
         
         return dateRange;
     }
+
+    
 }
