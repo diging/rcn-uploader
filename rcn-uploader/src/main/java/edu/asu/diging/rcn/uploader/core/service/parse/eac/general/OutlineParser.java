@@ -1,4 +1,4 @@
-package edu.asu.diging.rcn.uploader.core.service.parse.eac.desc.bioghist;
+package edu.asu.diging.rcn.uploader.core.service.parse.eac.general;
 
 import java.util.ArrayList;
 
@@ -11,14 +11,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.asu.diging.eaccpf.model.BiogHist;
+import edu.asu.diging.eaccpf.model.Functions;
 import edu.asu.diging.eaccpf.model.Outline;
 import edu.asu.diging.eaccpf.model.impl.OutlineImpl;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.BiogHistTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.FunctionsTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.desc.bioghist.IOutlineTagParserRegistry;
 
 @Component
-public class OutlineParser implements BiogHistTagParser {
-    
-    private Logger logger = LoggerFactory.getLogger(getClass());
+public class OutlineParser implements BiogHistTagParser, FunctionsTagParser {
     
     @Autowired
     private IOutlineTagParserRegistry parserRegistry;
@@ -30,9 +31,16 @@ public class OutlineParser implements BiogHistTagParser {
 
     @Override
     public void parse(Node node, BiogHist bio) {
+        bio.getOutlines().add(parseOutline(node));
+    }
+
+    @Override
+    public void parse(Node node, Functions functions) {
+        functions.getOutlines().add(parseOutline(node));
+    }
+
+    protected Outline parseOutline(Node node) {
         Outline outline = new OutlineImpl();
-        bio.getOutlines().add(outline);
-        
         outline.setLocalType(((Element)node).getAttribute("localType"));
         outline.setLevels(new ArrayList<>());
         
@@ -40,6 +48,7 @@ public class OutlineParser implements BiogHistTagParser {
         for(int i=0; i<items.getLength(); i++) {
             parserRegistry.parseRecordTag(items.item(i), outline);
         }
+        
+        return outline;
     }
-
 }

@@ -1,15 +1,18 @@
-package edu.asu.diging.rcn.uploader.core.service.parse.eac.desc.bioghist;
+package edu.asu.diging.rcn.uploader.core.service.parse.eac.general;
 
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import edu.asu.diging.eaccpf.model.ChronItem;
+import edu.asu.diging.eaccpf.model.Function;
 import edu.asu.diging.eaccpf.model.PlaceEntry;
 import edu.asu.diging.eaccpf.model.impl.PlaceEntryImpl;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.FunctionTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.desc.bioghist.ChronItemTagParser;
 
 @Component
-public class PlaceEntryParser implements ChronItemTagParser {
+public class PlaceEntryParser implements ChronItemTagParser, FunctionTagParser {
     
     @Override
     public String handlesTag() {
@@ -19,6 +22,16 @@ public class PlaceEntryParser implements ChronItemTagParser {
    
     @Override
     public void parse(Node node, ChronItem item) {
+        item.getPlaceEntries().add(parsePlaceEntry(node));
+    }
+
+
+    @Override
+    public void parse(Node node, Function function) {
+        function.getPlaceEntries().add(parsePlaceEntry(node));
+    }
+    
+    protected PlaceEntry parsePlaceEntry(Node node) {
         PlaceEntry entry = new PlaceEntryImpl();
         entry.setText(node.getTextContent());
         entry.setAccuracy(((Element)node).getAttribute("accuracy"));
@@ -30,7 +43,7 @@ public class PlaceEntryParser implements ChronItemTagParser {
         entry.setScriptCode(((Element)node).getAttribute("scriptCode"));
         entry.setTransliteration(((Element)node).getAttribute("transliteration"));
         entry.setVocabularySource(((Element)node).getAttribute("vocabularySource"));
-        item.getPlaceEntries().add(entry);
+        return entry;
     }
 
 }

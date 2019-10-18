@@ -1,4 +1,4 @@
-package edu.asu.diging.rcn.uploader.core.service.parse.eac.desc.bioghist;
+package edu.asu.diging.rcn.uploader.core.service.parse.eac.general;
 
 import java.io.StringWriter;
 
@@ -18,10 +18,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.asu.diging.eaccpf.model.BiogHist;
+import edu.asu.diging.eaccpf.model.Functions;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.BiogHistTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.FunctionsTagParser;
 
 @Component
-public class PParser implements BiogHistTagParser {
+public class PParser implements BiogHistTagParser, FunctionsTagParser {
     
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -30,10 +32,14 @@ public class PParser implements BiogHistTagParser {
         return "p";
     }
 
-   
     @Override
     public void parse(Node node, BiogHist bio) {
         bio.getPs().add(getPText(node));
+    }
+    
+    @Override
+    public void parse(Node node, Functions functions) {
+        functions.getPs().add(getPText(node));
     }
 
     private String getPText(Node node) throws TransformerFactoryConfigurationError {

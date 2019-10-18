@@ -7,7 +7,7 @@ import edu.asu.diging.eaccpf.model.LocalControl;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.LocalControlTagParser;
 
 @Component
-public class TermParser implements LocalControlTagParser {
+public class SimpleTermParser implements LocalControlTagParser {
 
     @Override
     public String handlesTag() {

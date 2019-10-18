@@ -19,16 +19,20 @@ import org.w3c.dom.NodeList;
 
 import edu.asu.diging.eaccpf.model.BiogHist;
 import edu.asu.diging.eaccpf.model.ConventionDeclaration;
+import edu.asu.diging.eaccpf.model.Function;
+import edu.asu.diging.eaccpf.model.Functions;
 import edu.asu.diging.eaccpf.model.LocalTypeDeclaration;
 import edu.asu.diging.eaccpf.model.RightsDeclaration;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.BiogHistTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.ConventionDeclarationTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.FunctionTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.FunctionsTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.LocalTypeDeclarationTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.RightsDeclarationTagParser;
 
 @Component
-public class CitationParser
-        implements ConventionDeclarationTagParser, LocalTypeDeclarationTagParser, RightsDeclarationTagParser, BiogHistTagParser {
+public class CitationParser implements ConventionDeclarationTagParser, LocalTypeDeclarationTagParser,
+        RightsDeclarationTagParser, BiogHistTagParser, FunctionTagParser, FunctionsTagParser {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -51,10 +55,20 @@ public class CitationParser
     public void parse(Node node, RightsDeclaration rights) {
         rights.setCitation(getCitationText(node));
     }
-    
+
     @Override
     public void parse(Node node, BiogHist bio) {
         bio.getCitations().add(getCitationText(node));
+    }
+    
+    @Override
+    public void parse(Node node, Function function) {
+        function.getCitations().add(getCitationText(node));
+    }
+    
+    @Override
+    public void parse(Node node, Functions functions) {
+        functions.getCitations().add(getCitationText(node));
     }
 
     private String getCitationText(Node node) throws TransformerFactoryConfigurationError {
