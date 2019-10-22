@@ -8,8 +8,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.asu.diging.eaccpf.model.ConventionDeclaration;
+import edu.asu.diging.eaccpf.model.CpfRelation;
 import edu.asu.diging.eaccpf.model.ExistDates;
 import edu.asu.diging.eaccpf.model.Function;
+import edu.asu.diging.eaccpf.model.FunctionRelation;
 import edu.asu.diging.eaccpf.model.Functions;
 import edu.asu.diging.eaccpf.model.Identity;
 import edu.asu.diging.eaccpf.model.LanguageUsed;
@@ -25,10 +27,14 @@ import edu.asu.diging.eaccpf.model.Mandates;
 import edu.asu.diging.eaccpf.model.Occupations;
 import edu.asu.diging.eaccpf.model.Place;
 import edu.asu.diging.eaccpf.model.Places;
+import edu.asu.diging.eaccpf.model.ResourceRelation;
 import edu.asu.diging.eaccpf.model.RightsDeclaration;
+import edu.asu.diging.eaccpf.model.SetComponent;
 import edu.asu.diging.eaccpf.model.Source;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.ConventionDeclarationTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.CpfRelationTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.ExistDatesTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.FunctionRelationsTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.FunctionTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.FunctionsTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.IdentityTagParser;
@@ -45,7 +51,9 @@ import edu.asu.diging.rcn.uploader.core.service.parse.eac.MandatesTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.OccupationsTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.PlaceTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.PlacesTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.ResourceRelationTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.RightsDeclarationTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.SetComponentTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.SourceTagParser;
 
 @Component
@@ -53,7 +61,8 @@ public class DescriptiveNoteParser implements ConventionDeclarationTagParser, Lo
         MaintAgencyTagParser, RightsDeclarationTagParser, SourceTagParser, IdentityTagParser, ExistDatesTagParser,
         FunctionTagParser, FunctionsTagParser, LanguageUsedTagParser, LanguagesUsedTagParser, LegalStatusTagParser,
         LegalStatusesTagParser, LocalDescriptionTagParser, LocalDescriptionsTagParser, MandateTagParser,
-        MandatesTagParser, OccupationsTagParser, PlaceTagParser, PlacesTagParser {
+        MandatesTagParser, OccupationsTagParser, PlaceTagParser, PlacesTagParser, CpfRelationTagParser,
+        FunctionRelationsTagParser, ResourceRelationTagParser, SetComponentTagParser {
 
     @Override
     public String handlesTag() {
@@ -172,6 +181,26 @@ public class DescriptiveNoteParser implements ConventionDeclarationTagParser, Lo
     @Override
     public void parse(Node node, Places places) {
         addDescriptiveNotes(node, places.getDescriptiveNote());
+    }
+
+    @Override
+    public void parse(Node node, CpfRelation relations) {
+        addDescriptiveNotes(node, relations.getDescriptiveNote());
+    }
+
+    @Override
+    public void parse(Node node, FunctionRelation relations) {
+        addDescriptiveNotes(node, relations.getDescriptiveNote());
+    }
+
+    @Override
+    public void parse(Node node, ResourceRelation relations) {
+        addDescriptiveNotes(node, relations.getDescriptiveNote());
+    }
+
+    @Override
+    public void parse(Node node, SetComponent component) {
+        addDescriptiveNotes(node, component.getDescriptiveNote());
     }
 
 }

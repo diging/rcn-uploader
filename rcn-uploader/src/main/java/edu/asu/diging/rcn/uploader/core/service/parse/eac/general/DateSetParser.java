@@ -6,27 +6,34 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import edu.asu.diging.eaccpf.model.CpfRelation;
 import edu.asu.diging.eaccpf.model.DateSet;
 import edu.asu.diging.eaccpf.model.ExistDates;
 import edu.asu.diging.eaccpf.model.Function;
+import edu.asu.diging.eaccpf.model.FunctionRelation;
 import edu.asu.diging.eaccpf.model.LegalStatus;
 import edu.asu.diging.eaccpf.model.LocalDescription;
 import edu.asu.diging.eaccpf.model.Mandate;
 import edu.asu.diging.eaccpf.model.Place;
+import edu.asu.diging.eaccpf.model.ResourceRelation;
 import edu.asu.diging.eaccpf.model.UseDates;
 import edu.asu.diging.eaccpf.model.impl.DateSetImpl;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.CpfRelationTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.ExistDatesTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.FunctionRelationsTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.FunctionTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.IDateSetTagParserRegistry;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.LegalStatusTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.LocalDescriptionTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.MandateTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.PlaceTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.ResourceRelationTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.UseDatesTagParser;
 
 @Component
 public class DateSetParser implements UseDatesTagParser, ExistDatesTagParser, FunctionTagParser, LegalStatusTagParser,
-        LocalDescriptionTagParser, MandateTagParser, PlaceTagParser {
+        LocalDescriptionTagParser, MandateTagParser, PlaceTagParser, CpfRelationTagParser, FunctionRelationsTagParser,
+        ResourceRelationTagParser {
 
     @Autowired
     private IDateSetTagParserRegistry parserRegistry;
@@ -35,7 +42,7 @@ public class DateSetParser implements UseDatesTagParser, ExistDatesTagParser, Fu
     public String handlesTag() {
         return "dateSet";
     }
-    
+
     protected DateSet parseDateSet(Node node) {
         DateSet dateSet = new DateSetImpl();
         dateSet.setLocalType(((Element) node).getAttribute("localType"));
@@ -82,6 +89,20 @@ public class DateSetParser implements UseDatesTagParser, ExistDatesTagParser, Fu
     public void parse(Node node, Place place) {
         place.getDateSets().add(parseDateSet(node));
     }
-    
+
+    @Override
+    public void parse(Node node, CpfRelation relations) {
+        relations.getDateSets().add(parseDateSet(node));
+    }
+
+    @Override
+    public void parse(Node node, FunctionRelation relations) {
+        relations.getDateSets().add(parseDateSet(node));
+    }
+
+    @Override
+    public void parse(Node node, ResourceRelation relations) {
+        relations.getDateSets().add(parseDateSet(node));
+    }
 
 }

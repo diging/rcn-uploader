@@ -5,32 +5,38 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import edu.asu.diging.eaccpf.model.ChronItem;
+import edu.asu.diging.eaccpf.model.CpfRelation;
 import edu.asu.diging.eaccpf.model.Date;
 import edu.asu.diging.eaccpf.model.DateSet;
 import edu.asu.diging.eaccpf.model.ExistDates;
 import edu.asu.diging.eaccpf.model.Function;
+import edu.asu.diging.eaccpf.model.FunctionRelation;
 import edu.asu.diging.eaccpf.model.LegalStatus;
 import edu.asu.diging.eaccpf.model.LocalControl;
 import edu.asu.diging.eaccpf.model.LocalDescription;
 import edu.asu.diging.eaccpf.model.Mandate;
 import edu.asu.diging.eaccpf.model.Place;
+import edu.asu.diging.eaccpf.model.ResourceRelation;
 import edu.asu.diging.eaccpf.model.UseDates;
 import edu.asu.diging.eaccpf.model.impl.DateImpl;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.CpfRelationTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.DateSetTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.ExistDatesTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.FunctionRelationsTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.FunctionTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.LegalStatusTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.LocalControlTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.LocalDescriptionTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.MandateTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.PlaceTagParser;
+import edu.asu.diging.rcn.uploader.core.service.parse.eac.ResourceRelationTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.UseDatesTagParser;
 import edu.asu.diging.rcn.uploader.core.service.parse.eac.desc.bioghist.ChronItemTagParser;
 
 @Component
-public class DateParser
-        implements UseDatesTagParser, DateSetTagParser, LocalControlTagParser, ChronItemTagParser, ExistDatesTagParser,
-        FunctionTagParser, LegalStatusTagParser, LocalDescriptionTagParser, MandateTagParser, PlaceTagParser {
+public class DateParser implements UseDatesTagParser, DateSetTagParser, LocalControlTagParser, ChronItemTagParser,
+        ExistDatesTagParser, FunctionTagParser, LegalStatusTagParser, LocalDescriptionTagParser, MandateTagParser,
+        PlaceTagParser, CpfRelationTagParser, FunctionRelationsTagParser, ResourceRelationTagParser {
 
     @Override
     public String handlesTag() {
@@ -94,6 +100,21 @@ public class DateParser
     @Override
     public void parse(Node node, Place place) {
         place.getDates().add(parseDate(node));
+    }
+
+    @Override
+    public void parse(Node node, CpfRelation relations) {
+        relations.getDates().add(parseDate(node));
+    }
+
+    @Override
+    public void parse(Node node, FunctionRelation relations) {
+        relations.getDates().add(parseDate(node));
+    }
+
+    @Override
+    public void parse(Node node, ResourceRelation relations) {
+        relations.getDates().add(parseDate(node));
     }
 
 }

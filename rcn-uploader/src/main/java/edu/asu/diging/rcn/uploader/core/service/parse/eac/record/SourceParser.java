@@ -31,15 +31,18 @@ public class SourceParser implements RecordTagParser {
             record.setSources(new ArrayList<Source>());
         }
         
-        NodeList nodeList = ((Element)node).getElementsByTagName("source");
+        NodeList nodeList = ((Element)node).getChildNodes();
         for(int i = 0; i<nodeList.getLength(); i++) {
-            Source source = new SourceImpl();
-            record.getSources().add(source);
-            Node sourceNode = nodeList.item(i);
-            source.setLastDateTimeVerified(((Element)node).getAttribute("lastDateTimeVerified"));
-            NodeList sourceChildren = sourceNode.getChildNodes();
-            for (int j=0; j<sourceChildren.getLength(); j++) {
-                sourceTagParsers.parseRecordTag(sourceChildren.item(j), source);
+            if (nodeList.item(i).getNodeName().equals("source")) {
+                Source source = new SourceImpl();
+                record.getSources().add(source);
+                
+                Node sourceNode = nodeList.item(i);
+                source.setLastDateTimeVerified(((Element)node).getAttribute("lastDateTimeVerified"));
+                NodeList sourceChildren = sourceNode.getChildNodes();
+                for (int j=0; j<sourceChildren.getLength(); j++) {
+                    sourceTagParsers.parseRecordTag(sourceChildren.item(j), source);
+                }
             }
         }
     }
