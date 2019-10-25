@@ -26,6 +26,9 @@
 		<rcnmatcher.download.path></rcnmatcher.download.path>
 		<rcnmatcher.client.key></rcnmatcher.client.key>
 		<rcnmatcher.client.secret></rcnmatcher.client.secret>
+		
+		<hibernate.index.base></hibernate.index.base>
+		<hibernate.index.on.startup>true</hibernate.index.on.startup>
 
 		<kafka.hosts>localhost:9092</kafka.hosts>
 		<log.level>debug</log.level>
