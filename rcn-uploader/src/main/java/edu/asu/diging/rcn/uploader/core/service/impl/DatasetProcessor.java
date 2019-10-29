@@ -80,13 +80,15 @@ public class DatasetProcessor implements IDatasetProcessor {
         
         while (recordIterator.hasNext()) {
             Record record = recordIterator.next();
-            record.setDatasetId(dataset.getId());
-            recordRepo.save((RecordImpl)record);
-            if (dataset.getRecords() == null) {
-                dataset.setRecords(new ArrayList<Record>());
+            if (record != null) {
+                record.setDatasetId(dataset.getId());
+                recordRepo.save((RecordImpl)record);
+                if (dataset.getRecords() == null) {
+                    dataset.setRecords(new ArrayList<Record>());
+                }
+                dataset.getRecords().add(record);
+                datasetRepo.save((DatasetImpl)dataset);
             }
-            dataset.getRecords().add(record);
-            datasetRepo.save((DatasetImpl)dataset);
         }
     }
     
