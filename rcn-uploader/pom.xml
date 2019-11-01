@@ -15,6 +15,9 @@
 		<thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
 		<spring.kafka.version>2.2.8.RELEASE</spring.kafka.version>
 
+		<diging.rcn.model.version>0.1</diging.rcn.model.version>
+		<diging.rcn.kafka.messages>0.1</diging.rcn.kafka.messages>
+
 		<admin.password>$2a$04$oQo44vqcDIFRoYKiAXoNheurzkwX9dcNmowvTX/hsWuBMwijqn44i</admin.password>
 
 		<db.driver>com.mysql.jdbc.Driver</db.driver>
@@ -26,12 +29,17 @@
 		<rcnmatcher.download.path></rcnmatcher.download.path>
 		<rcnmatcher.client.key></rcnmatcher.client.key>
 		<rcnmatcher.client.secret></rcnmatcher.client.secret>
-		
+
 		<hibernate.index.base></hibernate.index.base>
 		<hibernate.index.on.startup>true</hibernate.index.on.startup>
 
 		<kafka.hosts>localhost:9092</kafka.hosts>
 		<log.level>debug</log.level>
+
+		<tomcat.deploy.path></tomcat.deploy.path>
+		<tomcat.app.name>authmatcher</tomcat.app.name>
+		<tomcat.server.id>TomcatServer</tomcat.server.id>
+
 	</properties>
 
 	<dependencyManagement>
@@ -59,12 +67,12 @@
 		<dependency>
 			<groupId>edu.asu.diging</groupId>
 			<artifactId>rcn-model</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${diging.rcn.model.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>edu.asu.diging</groupId>
 			<artifactId>rcn-kafka-messages</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>${diging.rcn.kafka.messages}</version>
 		</dependency>
 
 		<!-- Spring -->
@@ -295,6 +303,16 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<url>${tomcat.deploy.path}</url>
+					<server>${tomcat.server.id}</server>
+					<path>/${tomcat.app.name}</path>
 				</configuration>
 			</plugin>
 		</plugins>
