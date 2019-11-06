@@ -15,7 +15,7 @@
 		<thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
 		<spring.kafka.version>2.2.8.RELEASE</spring.kafka.version>
 
-		<diging.rcn.model.version>0.1</diging.rcn.model.version>
+		<diging.rcn.model.version>0.2</diging.rcn.model.version>
 		<diging.rcn.kafka.messages>0.1</diging.rcn.kafka.messages>
 
 		<admin.password>$2a$04$oQo44vqcDIFRoYKiAXoNheurzkwX9dcNmowvTX/hsWuBMwijqn44i</admin.password>
@@ -31,7 +31,7 @@
 		<rcnmatcher.client.secret></rcnmatcher.client.secret>
 
 		<hibernate.index.base></hibernate.index.base>
-		<hibernate.index.on.startup>true</hibernate.index.on.startup>
+		<hibernate.index.on.startup>false</hibernate.index.on.startup>
 
 		<kafka.hosts>localhost:9092</kafka.hosts>
 		<log.level>debug</log.level>
