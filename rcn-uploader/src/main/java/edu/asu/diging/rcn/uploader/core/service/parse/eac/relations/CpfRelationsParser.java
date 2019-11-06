@@ -30,6 +30,7 @@ public class CpfRelationsParser implements RelationsTagParser {
         CpfRelation cpfRel = new CpfRelationImpl();
         cpfRel.setCpfRelationType(((Element)node).getAttribute("cpfRelationType"));
         cpfRel.setLastDateTimeVerified(((Element)node).getAttribute("lastDateTimeVerified"));
+        cpfRel.setHref(((Element)node).getAttributeNS("http://www.w3.org/1999/xlink", "href"));
         cpfRel.setDates(new ArrayList<>());
         cpfRel.setDateRanges(new ArrayList<>());
         cpfRel.setDateSets(new ArrayList<>());
